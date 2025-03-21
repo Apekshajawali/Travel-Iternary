@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import SearchFilters from '@/components/ui/SearchFilters';
-import { destinations, getDestinationsByTags } from '@/lib/data';
+import { destinations } from '@/lib/data';
 import { MapPin, Star } from 'lucide-react';
 
 const Destinations = () => {
@@ -31,7 +31,9 @@ const Destinations = () => {
     }
     
     if (activeFilters.length > 0) {
-      result = getDestinationsByTags(activeFilters);
+      result = result.filter(destination => 
+        destination.tags.some(tag => activeFilters.includes(tag))
+      );
     }
     
     setFilteredDestinations(result);

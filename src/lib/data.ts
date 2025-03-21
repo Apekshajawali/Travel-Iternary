@@ -1,4 +1,3 @@
-
 export interface Destination {
   id: string;
   name: string;
@@ -368,7 +367,8 @@ export const getGuideById = (id: string): TravelGuide | undefined => {
 
 export const getDestinationsByTags = (tags: string[]): Destination[] => {
   if (!tags.length) return destinations;
+  
   return destinations.filter(destination => 
-    destination.tags.some(tag => tags.includes(tag))
+    tags.some(tag => destination.tags.includes(tag))
   );
 };
