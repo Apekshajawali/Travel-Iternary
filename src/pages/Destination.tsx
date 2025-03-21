@@ -4,7 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, CreditCard, Globe, Award, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { getDestinationById, fetchWeatherData, getWeatherIconUrl } from '@/lib/data';
+import { getDestinationById } from '@/lib/data';
+import { fetchWeatherData, getWeatherIconUrl } from '@/lib/weather';
 import { destinations } from '@/lib/data';
 
 const Destination = () => {
