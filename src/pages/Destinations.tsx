@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import SearchFilters from '@/components/ui/SearchFilters';
-import { destinations } from '@/lib/data';
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, Star, Loader } from 'lucide-react';
+import { useData } from '@/providers/DataProvider';
 
 const Destinations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const [filteredDestinations, setFilteredDestinations] = useState(destinations);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  
+  const { destinations, loading, error, refetch } = useData();
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,7 +39,7 @@ const Destinations = () => {
     }
     
     setFilteredDestinations(result);
-  }, [searchTerm, activeFilters]);
+  }, [searchTerm, activeFilters, destinations]);
   
   const handleSearchChange = (term: string) => {
     setSearchTerm(term);
@@ -70,7 +72,25 @@ const Destinations = () => {
               </div>
               
               <div className="lg:col-span-3">
-                {filteredDestinations.length === 0 ? (
+                {loading.destinations ? (
+                  <div className="flex justify-center items-center py-20">
+                    <Loader size={40} className="animate-spin text-travel-blue" />
+                    <span className="ml-3 text-lg text-gray-600">Loading destinations...</span>
+                  </div>
+                ) : error.destinations ? (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
+                    <h3 className="text-xl font-medium mb-2 text-red-600">Error</h3>
+                    <p className="text-gray-600 mb-4">
+                      {error.destinations}
+                    </p>
+                    <button
+                      onClick={() => refetch.destinations()}
+                      className="px-4 py-2 text-sm bg-travel-blue text-white rounded-lg hover:bg-travel-blue/90 transition-colors duration-300"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                ) : filteredDestinations.length === 0 ? (
                   <div className="bg-white rounded-xl p-8 text-center">
                     <h3 className="text-xl font-medium mb-2">No destinations found</h3>
                     <p className="text-gray-600 mb-4">
